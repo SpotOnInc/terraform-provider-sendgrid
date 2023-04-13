@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# This script is designed to help you build, test, and format (make test and make fmt) 
+# the provider locally without installing the specific version of Go that the provider requires.
+# All you need is to have Docker installed on your system.
+
+REPO_NAME=$(basename $(pwd))
+IMAGE_NAME=$REPO_NAME-dev
+
+# Check if the Docker image already exists
+if [ "$(docker images -q $IMAGE_NAME 2> /dev/null)" == "" ]; then
+  # If the image doesn't exist, build it from the Dockerfile
+  docker build --rm -t $IMAGE_NAME --build-arg REPO_NAME=$REPO_NAME .
+else
+  # If the image already exists, use the cache and only rebuild if the Dockerfile has changed
+  docker build --cache-from $IMAGE_NAME -t $IMAGE_NAME --build-arg REPO_NAME=$REPO_NAME .
+fi
+
+# Run a Docker container using the built image and mounting the project directory as a volume
+docker run --rm -it -v $(pwd):/terraform-provider-sendgrid $IMAGE_NAME
