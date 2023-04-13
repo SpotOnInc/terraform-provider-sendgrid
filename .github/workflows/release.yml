@@ -32,10 +32,21 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache: true
+      - name: Check if GPG_PRIVATE_KEY secret is not empty
+        run: |
+          if [ -z "${{ secrets.GPG_PRIVATE_KEY }}" ]; then
+            echo "GPG_PRIVATE_KEY secret is empty"
+            exit 1
+          else
+            echo "GPG_PRIVATE_KEY secret is not empty"
+          fi
       -
         name: Import GPG key
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v5
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
