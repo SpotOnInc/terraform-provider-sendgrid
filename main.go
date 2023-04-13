@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
-	"github.com/taharah/terraform-provider-sendgrid/sendgrid"
+	"github.com/SpotOnInc/terraform-provider-sendgrid/sendgrid"
 )
 
 func main() {

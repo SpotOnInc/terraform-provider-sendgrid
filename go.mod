@@ -1,4 +1,4 @@
-module github.com/taharah/terraform-provider-sendgrid
+module github.com/SpotOnInc/terraform-provider-sendgrid
 
 go 1.18
 
