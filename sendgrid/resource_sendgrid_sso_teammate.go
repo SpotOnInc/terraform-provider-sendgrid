@@ -22,10 +22,10 @@ package sendgrid
 import (
 	"context"
 
+	sendgrid "github.com/SpotOnInc/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	sendgrid "github.com/SpotOnInc/terraform-provider-sendgrid/sdk"
 )
 
 func resourceSendgridSSOTeammate() *schema.Resource {
@@ -42,7 +42,6 @@ func resourceSendgridSSOTeammate() *schema.Resource {
 			"email": {
 				Type:     schema.TypeString,
 				Required: true,
-				Computed: true,
 			},
 			"first_name": {
 				Type:     schema.TypeString,
@@ -72,6 +71,7 @@ func resourceSendgridSSOTeammate() *schema.Resource {
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
 				},
+				Description: "The scopes for the SendGrid TeamMate access.",
 			},
 		},
 	}
@@ -85,7 +85,7 @@ func resourceSendgridSSOTeammateCreate(ctx context.Context, d *schema.ResourceDa
 	lastName := d.Get("last_name").(string)
 	isAdmin := d.Get("is_admin").(bool)
 	persona := d.Get("persona").(string)
-	scopes := ExpandStringList(d.Get("scopes").([]interface{}))
+	scopes := ExpandStringList(d.Get("scopes").(*schema.Set).List())
 
 	teammateStruct, err := sendgrid.RetryOnRateLimit(ctx, d, func() (interface{}, sendgrid.RequestError) {
 		return c.CreateSSOTeamMate(email, firstName, lastName, isAdmin, persona, scopes)
@@ -101,10 +101,10 @@ func resourceSendgridSSOTeammateCreate(ctx context.Context, d *schema.ResourceDa
 	return resourceSendgridSSOTeammateRead(ctx, d, m)
 }
 
-func resourceSendgridSSOTeammateRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+func resourceSendgridSSOTeammateRead(_ context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	c := m.(*sendgrid.Client)
 
-	email := d.Id()
+	email := d.Get("email").(string)
 
 	teammate, request := c.ReadSSOTeamMate(email)
 	if request.Err != nil {
@@ -129,7 +129,7 @@ func resourceSendgridSSOTeammateUpdate(ctx context.Context, d *schema.ResourceDa
 	lastName := d.Get("last_name").(string)
 	isAdmin := d.Get("is_admin").(bool)
 	persona := d.Get("persona").(string)
-	scopes := ExpandStringList(d.Get("scopes").([]interface{}))
+	scopes := ExpandStringList(d.Get("scopes").(*schema.Set).List())
 
 	_, err := sendgrid.RetryOnRateLimit(ctx, d, func() (interface{}, sendgrid.RequestError) {
 		return c.UpdateSSOTeamMate(email, email, firstName, lastName, isAdmin, persona, scopes)

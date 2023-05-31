@@ -4,17 +4,17 @@ import (
 	"fmt"
 	"testing"
 
+	sendgrid "github.com/SpotOnInc/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	sendgrid "github.com/SpotOnInc/terraform-provider-sendgrid/sdk"
 )
 
 func TestAccSendgridSsoTeammateBasic(t *testing.T) {
 	email := "terraform-user-" + acctest.RandString(10) + "@example.org"
 	firstName := "terraform"
 	lastName := "user"
-	is_admin := false
+	isAdmin := false
 	persona := "observer"
 	scopes := []string{"mail.send", "alerts.read"}
 
@@ -28,7 +28,7 @@ func TestAccSendgridSsoTeammateBasic(t *testing.T) {
 					email,
 					firstName,
 					lastName,
-					is_admin,
+					isAdmin,
 					persona,
 					scopes,
 				),
@@ -62,7 +62,7 @@ func testAccCheckSendgridSSOTeammateConfigBasic(
 	email string,
 	firstName string,
 	lastName string,
-	is_admin bool,
+	isAdmin bool,
 	persona string,
 	scopes []string,
 ) string {
@@ -75,7 +75,7 @@ resource "sendgrid_sso_teammate" "this" {
 	persona    = "%s"
 	scopes     = %q
 }
-`, email, firstName, lastName, is_admin, persona, scopes)
+`, email, firstName, lastName, isAdmin, persona, scopes)
 }
 
 func testAccCheckSendgridSSOTeammateExists(n string) resource.TestCheckFunc {
