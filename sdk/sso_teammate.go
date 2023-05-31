@@ -7,12 +7,13 @@ import (
 )
 
 const (
-	ssoTeammateEndpoint = "/v3/sso/teammates"
-	teammateEndpoint    = "/v3/teammates/%s"
+	ssoTeammateEndpoint       = "/sso/teammates"
+	ssoTeammateEndpointWithID = "/sso/teammates/%s"
+	teammateEndpoint          = "/teammates/%s"
 )
 
 type SSOTeammate struct {
-	Username  string   `json:"id,omitempty"`
+	Username  string   `json:"username,omitempty"`
 	Email     string   `json:"email"`
 	FirstName string   `json:"first_name"`
 	LastName  string   `json:"last_name"`
@@ -50,7 +51,7 @@ func (c Client) CreateSSOTeamMate(
 	if statusCode != http.StatusCreated {
 		return nil, RequestError{
 			StatusCode: statusCode,
-			Err:        fmt.Errorf("failed to create teammate, status code: %d", statusCode),
+			Err:        fmt.Errorf("failed to create SSO teammate, status code: %d, body: %w", statusCode, respBody),
 		}
 	}
 
@@ -92,7 +93,7 @@ func (c Client) UpdateSSOTeamMate(
 	scopes []string,
 ) (*SSOTeammate, RequestError) {
 
-	respBody, statusCode, err := c.Post("PATCH", fmt.Sprintf(teammateEndpoint, username), SSOTeammate{
+	respBody, statusCode, err := c.Post("PATCH", fmt.Sprintf(ssoTeammateEndpointWithID, username), SSOTeammate{
 		Email:     email,
 		FirstName: firstName,
 		LastName:  lastName,

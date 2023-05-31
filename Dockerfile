@@ -1,6 +1,10 @@
 # Use golang version 1.18 as the base image
 FROM golang:1.18
 
+# Install golangci-lint
+# Docs: https://golangci-lint.run/usage/install/
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.2
+
 # Set the repo name as a build argument (default to "app" if not provided)
 ARG REPO_NAME=app
 
