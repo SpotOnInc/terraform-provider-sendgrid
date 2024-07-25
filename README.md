@@ -1,3 +1,7 @@
+# ARCHIVE INFORMATION
+> [!IMPORTANT]
+> Due to lack of usage and maintenance, this repository has been archived.  
+> Please read the [repository archival FAQ](https://docs.corp.spoton.sh/developer/undocumented-repositories-archival-faq/) for more information!
 <!-- markdownlint-disable first-line-h1 no-inline-html -->
 <a href="https://terraform.io">
     <img src=".github/terraform_logo.svg" alt="Terraform logo" title="Terraform" align="right" height="50" />
