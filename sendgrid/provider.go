@@ -33,9 +33,9 @@ package sendgrid
 import (
 	"context"
 
+	sendgrid "github.com/SpotOnInc/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	sendgrid "github.com/SpotOnInc/terraform-provider-sendgrid/sdk"
 )
 
 const (
@@ -72,17 +72,18 @@ func Provider() *schema.Provider {
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"sendgrid_api_key":               resourceSendgridAPIKey(),
-			"sendgrid_subuser":               resourceSendgridSubuser(),
+			"sendgrid_unsubscribe_group":     resourceSendgridUnsubscribeGroup(),
 			"sendgrid_template":              resourceSendgridTemplate(),
 			"sendgrid_template_version":      resourceSendgridTemplateVersion(),
-			"sendgrid_unsubscribe_group":     resourceSendgridUnsubscribeGroup(),
-			"sendgrid_parse_webhook":         resourceSendgridParseWebhook(),
-			"sendgrid_event_webhook":         resourceSendgridEventWebhook(),
-			"sendgrid_domain_authentication": resourceSendgridDomainAuthentication(),
-			"sendgrid_link_branding":         resourceSendgridLinkBranding(),
+			"sendgrid_subuser":               resourceSendgridSubuser(),
+			"sendgrid_sso_teammate":          resourceSendgridSSOTeammate(),
 			"sendgrid_sso_integration":       resourceSendgridSSOIntegration(),
 			"sendgrid_sso_certificate":       resourceSendgridSSOCertificate(),
+			"sendgrid_parse_webhook":         resourceSendgridParseWebhook(),
+			"sendgrid_link_branding":         resourceSendgridLinkBranding(),
+			"sendgrid_event_webhook":         resourceSendgridEventWebhook(),
+			"sendgrid_domain_authentication": resourceSendgridDomainAuthentication(),
+			"sendgrid_api_key":               resourceSendgridAPIKey(),
 		},
 
 		ConfigureContextFunc: providerConfigure,

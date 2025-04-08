@@ -18,10 +18,10 @@ package sendgrid
 import (
 	"context"
 
+	sendgrid "github.com/SpotOnInc/terraform-provider-sendgrid/sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	sendgrid "github.com/SpotOnInc/terraform-provider-sendgrid/sdk"
 )
 
 func resourceSendgridTemplate() *schema.Resource {
